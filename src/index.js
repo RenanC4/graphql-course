@@ -3,6 +3,8 @@ import {GraphQLServer} from 'graphql-yoga'
 //type definitions (schema)
 const typeDefs = `
   type Query {
+   greeting(name: String, position: String): String!
+   sum(firstNumber: Int!, secondNumber: Int!): Int!
    me: User!
    post: Post!
   }
@@ -25,6 +27,17 @@ const typeDefs = `
 //resolvers
 const resolvers = {
   Query: {
+    sum(parent, args, ctx, info){
+      if(args.firstNumber && args. secondNumber) {
+        return args.firstNumber + args. secondNumber
+      }
+      return 0
+    },
+    greeting(parent, args, ctx, info) {
+      console.log(args)
+      if(args.name && args.position){return `Hello ${args.name} voce é ${args.position}`}
+      return 'name'
+    },
     me(){
       return {
         id: '123',
