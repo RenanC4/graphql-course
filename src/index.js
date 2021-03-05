@@ -1,12 +1,31 @@
 import {GraphQLServer} from 'graphql-yoga'
+//demo data
 
+const users = [{
+  id:'1',
+  name: 'Renan',
+  email: 'renanc433@gmail.com',
+  age: 24
+},
+{
+  id:'2',
+  name: 'Hernandes',
+  email: 'hernandes@gmail.com',
+  age: 1
+},
+{
+  id:'3',
+  name: 'Lorena',
+  email: 'lorena@gmail.com',
+  age: 1
+}
+]
 //type definitions (schema)
 const typeDefs = `
   type Query {
-   greeting(name: String, position: String): String!
-   sum(firstNumber: Int!, secondNumber: Int!): Int!
-   me: User!
-   post: Post!
+    users(query: String):[User!]!
+    me: User!
+    post: Post!
   }
 
   type User {
@@ -27,16 +46,14 @@ const typeDefs = `
 //resolvers
 const resolvers = {
   Query: {
-    sum(parent, args, ctx, info){
-      if(args.firstNumber && args. secondNumber) {
-        return args.firstNumber + args. secondNumber
+    users(parent, args, ctx, info){
+      if(!args.query){
+        return users
       }
-      return 0
-    },
-    greeting(parent, args, ctx, info) {
-      console.log(args)
-      if(args.name && args.position){return `Hello ${args.name} voce é ${args.position}`}
-      return 'name'
+
+      return users.filter(user=>{
+        return user.name.toLocaleLowerCase().includes(args.query.toLocaleLowerCase())
+      })
     },
     me(){
       return {
@@ -52,7 +69,7 @@ const resolvers = {
         body: 'topzera da balada esse graphql hein bixo',
         published: true
       }
-    }
+    },
 
   }
 }
