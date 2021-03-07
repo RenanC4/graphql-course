@@ -30,7 +30,7 @@ const posts = [{
   id:'2',
   author: 'Hernandes Campos',
   title: 'The it',
-  body: 'The it is the thing that is not the thing'
+  body: 'The it is the thing that is not the thing nasce'
 }
 ]
 
@@ -74,11 +74,13 @@ const resolvers = {
       if(!args.query){
         return posts
       }
-
       return posts.filter(post => {
-        return post.title.toLocaleLowerCase().includes(args.query.toLocaleLowerCase())
+        const titleMatch = post.title.toLocaleLowerCase()
+                                      .includes(args.query.toLocaleLowerCase())
+        const bodyMatch = post.body.toLocaleLowerCase()
+                                      .includes(args.query.toLocaleLowerCase())
+        return titleMatch || bodyMatch
       })
-
     },
     me(){
       return {
